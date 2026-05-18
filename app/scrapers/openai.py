@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta, timezone
-from typing import Optional
+from typing import Optional, List
 import feedparser
 from pydantic import BaseModel
+from docling.document_converter import DocumentConverter
 
 
 class OpenAIArticle(BaseModel):
@@ -16,8 +17,9 @@ class OpenAIArticle(BaseModel):
 class OpenAIScraper:
     def __init__(self):
         self.rss_url = "https://openai.com/news/rss.xml"
+        self.converter = DocumentConverter()
 
-    def get_latest_articles(self, hours: Optional[int] = 168) -> list[OpenAIArticle]:
+    def get_articles(self, hours: Optional[int] = 168) -> list[OpenAIArticle]:
         """Fetch the latest articles from OpenAI RSS feed."""
         feed = feedparser.parse(self.rss_url)
 
@@ -25,10 +27,15 @@ class OpenAIScraper:
             print("❌ Không có bài viết nào từ OpenAI feed")
             return []
 
-        cutoff_time = datetime.now(timezone.utc) - timedelta(hours=hours)
+        now = datetime.now(timezone.utc)
+        cutoff_time = now - timedelta(hours=hours)
         
         articles = []
         for entry in feed.entries:
+            published_parsed = getattr(entry, "published_parsed", None)
+            if not published_parsed:
+                continue
+
             published_time = datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)
             
             # Lọc theo thời gian (tùy chọn)
@@ -46,15 +53,9 @@ class OpenAIScraper:
                 ))
                 
         return articles
-
-
-if __name__ == "__main__":
-    scraper = OpenAIScraper()
-    articles = scraper.get_latest_articles(240) # Lấy bài viết trong 10 ngày qua
     
-    print(f"✅ Tìm thấy {len(articles)} bài viết mới.")
-    if articles:
-        # In bài viết đầu tiên để kiểm tra
-        for article in articles:
-            print(article.model_dump_json(indent=4))
-        # print(articles[0:10].model_dump_json(indent=2))
+    def url_to_markdown(self, url: str) -> Optional[str]:
+        markdown = self.converter.convert(url)
+        content = markdown.document.export_to_markdown()
+
+        return content

@@ -34,7 +34,7 @@ class YouTubeScraper:
             return video_url.split("youtu.be/")[1].split("?")[0]
         return video_url
 
-    def get_latest_videos(self, channel_id: Optional[str] = None, hours: Optional[int] = 48) -> list[ChannelVideo]:
+    def get_videos(self, channel_id: Optional[str] = None, hours: Optional[int] = 168) -> list[ChannelVideo]:
         feed = feedparser.parse(self.get_rss_url(channel_id))
 
         if not feed.entries:
@@ -67,7 +67,7 @@ class YouTubeScraper:
         except Exception:
             return None
 
-    def scrape_channel(self, channel_id: str, hours: int = 150) -> list[ChannelVideo]:
+    def scrape_channel(self, channel_id: str, hours: int = 168) -> list[ChannelVideo]:
         videos = self.get_latest_videos(channel_id, hours)
         result = []
         for video in videos:
@@ -79,7 +79,7 @@ class YouTubeScraper:
 if __name__ == "__main__":
     scraper = YouTubeScraper()
     # Dùng hàm scrape_channel vừa tạo để lấy full cả list video và transcript
-    videos = scraper.scrape_channel("UCn8ujwUInbJkBhffxqAPBVQ", 72)
+    videos = scraper.scrape_channel("UCawZsQWqfGSbCI5yjkdVkTA", 168)
     if videos:
         print(f"Đã scrape hoàn tất {len(videos)} videos.")
         print(videos[0].model_dump_json(indent=2))
