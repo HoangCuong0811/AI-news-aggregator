@@ -8,10 +8,10 @@ from pydantic import BaseModel
 class Transcript(BaseModel):
     text: str
 
-
 class ChannelVideo(BaseModel):
     title: str
     url: str
+    channel_id: str
     video_id: str
     published_at: datetime
     description: str
@@ -51,6 +51,7 @@ class YouTubeScraper:
                 videos.append(ChannelVideo(
                     title=entry.title,
                     url=entry.link,
+                    channel_id=channel_id,
                     video_id=video_id,
                     published_at=published_time,
                     description=entry.get("summary", "")
@@ -74,12 +75,11 @@ class YouTubeScraper:
             transcript = self.get_transcripts(video.video_id)
             result.append(video.model_copy(update={"transcript": transcript.text if transcript else None}))
         return result
-
-
+    
 if __name__ == "__main__":
     scraper = YouTubeScraper()
-    # Dùng hàm scrape_channel vừa tạo để lấy full cả list video và transcript
-    videos = scraper.scrape_channel("UCawZsQWqfGSbCI5yjkdVkTA", 168)
-    if videos:
-        print(f"Đã scrape hoàn tất {len(videos)} videos.")
-        print(videos[0].model_dump_json(indent=2))
+    videos = scraper.get_videos("UCawZsQWqfGSbCI5yjkdVkTA")
+
+    print(f"Da tim duoc {len(videos)} videos")
+    print(videos[0])
+

@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: ai_news_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ai_news_user
+      POSTGRES_PASSWORD: ai_news_password_123!
+      POSTGRES_DB: ai_news_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
