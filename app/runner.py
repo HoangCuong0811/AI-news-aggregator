@@ -6,7 +6,7 @@ from app.scrapers.openai import OpenAIScraper
 from app.scrapers.youtube import YouTubeScraper
 
 
-def run_scrapers(hours: int = 168) -> dict:
+def run_scrapers(hours: int = 200) -> dict:
     youtube_scraper = YouTubeScraper()
     openai_scraper = OpenAIScraper()
     anthropic_scraper = AnthropicScraper()
@@ -21,18 +21,18 @@ def run_scrapers(hours: int = 168) -> dict:
     anthropic_articles = anthropic_scraper.get_articles(hours)
 
     if youtube_videos:
-        repo.bulk_create_youtube_videos(youtube_videos)
+        repo.create_youtube_videos(youtube_videos)
 
     if openai_articles:
-        repo.bulk_create_openai_articles(openai_articles)
+        repo.create_openai_articles(openai_articles)
 
     if anthropic_articles:
-        repo.bulk_create_anthropic_articles(anthropic_articles)
+        repo.create_anthropic_articles(anthropic_articles)
 
     return {
-        "videos": youtube_videos,
-        "anthropics": anthropic_articles,
-        "openais": openai_articles,
+        "videos": len(youtube_videos),
+        "anthropics": len(anthropic_articles),
+        "openais": len(openai_articles),
     }
 
 

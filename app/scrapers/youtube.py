@@ -32,6 +32,8 @@ class YouTubeScraper:
             return video_url.split("v=")[1].split("&")[0]
         if "youtu.be/" in video_url:
             return video_url.split("youtu.be/")[1].split("?")[0]
+        if "youtube.com/shorts/" in video_url:
+            return video_url.split("shorts/")[1].split("?")[0]
         return video_url
 
     def get_videos(self, channel_id: Optional[str] = None, hours: Optional[int] = 168) -> list[ChannelVideo]:

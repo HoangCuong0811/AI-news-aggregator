@@ -8,7 +8,7 @@ class Repository:
     def __init__(self, session: Optional[Session] = None) -> None:
         self.session = session or get_session()
 
-    def bulk_create_youtube_videos(self, videos: List[dict]) -> int:
+    def create_youtube_videos(self, videos: List[dict]) -> int:
         new_videos = []
         for v in videos:
             existing = self.session.query(YouTubeVideoModel).filter_by(video_id=v.video_id).first()
@@ -27,7 +27,7 @@ class Repository:
             self.session.commit()
         return len(new_videos)
     
-    def bulk_create_openai_articles(self, articles: list) -> int:
+    def create_openai_articles(self, articles: list) -> int:
         new_articles = []
         for a in articles:
             existing = self.session.query(OpenAIArticleModel).filter_by(guid=a.guid).first()
@@ -45,7 +45,7 @@ class Repository:
             self.session.commit()
         return len(new_articles)
     
-    def bulk_create_anthropic_articles(self, articles: list) -> int:
+    def create_anthropic_articles(self, articles: list) -> int:
         new_articles = []
         for a in articles:
             existing = self.session.query(AnthropicArticleModel).filter_by(guid=a.guid).first()
