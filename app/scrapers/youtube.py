@@ -80,8 +80,5 @@ class YouTubeScraper:
     
 if __name__ == "__main__":
     scraper = YouTubeScraper()
-    videos = scraper.get_videos("UCawZsQWqfGSbCI5yjkdVkTA")
-
-    print(f"Da tim duoc {len(videos)} videos")
-    print(videos[0])
-
+    content = scraper.get_transcripts("tk9lt-9x8mE")
+    print(content)

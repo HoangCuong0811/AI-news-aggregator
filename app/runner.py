@@ -30,9 +30,9 @@ def run_scrapers(hours: int = 200) -> dict:
         repo.create_anthropic_articles(anthropic_articles)
 
     return {
-        "videos": len(youtube_videos),
-        "anthropics": len(anthropic_articles),
-        "openais": len(openai_articles),
+        "youtube": youtube_videos,
+        "anthropic": anthropic_articles,
+        "openai": openai_articles,
     }
 
 

@@ -9,6 +9,7 @@ class AnthropicArticle(BaseModel):
     description: str
     url: str
     guid: str
+    markdown: str
     published_at: datetime
     category: Optional[str] = None
 
@@ -62,3 +63,15 @@ class AnthropicScraper:
         content = markdown.document.export_to_markdown()
 
         return content
+    
+if __name__ == "__main__":
+    urls = ["https://openai.com/index/gartner-2026-agentic-coding-leader"]
+    scraper = AnthropicScraper()
+    markdowns = []
+
+    for url in urls:
+        markdown = scraper.url_to_markdown(url)
+        markdowns.append(markdown)
+
+    print(markdowns[0])
+

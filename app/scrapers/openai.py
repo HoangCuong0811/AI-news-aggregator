@@ -12,6 +12,7 @@ class OpenAIArticle(BaseModel):
     guid: str
     published_at: datetime
     category: Optional[str] = None
+    markdown: str
 
 
 class OpenAIScraper:
@@ -59,3 +60,4 @@ class OpenAIScraper:
         content = markdown.document.export_to_markdown()
 
         return content
+    
