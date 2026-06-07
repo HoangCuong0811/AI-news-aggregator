@@ -44,3 +44,14 @@ class YouTubeVideoModel(Base):
     transcript = Column(Text, nullable=True)
     published_at = Column(DateTime(timezone=True), nullable=False)
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
+
+class Digest(Base):
+    __tablename__ = "digests"
+
+    id = Column(String, primary_key=True)
+    article_type = Column(String, nullable=False)
+    article_id = Column(String, nullable=False)
+    url = Column(String, nullable=False)
+    title = Column(String, nullable=False)
+    summary = Column(Text, nullable=False)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=func.now())

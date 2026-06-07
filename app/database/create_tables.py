@@ -1,5 +1,5 @@
-from connection import engine
-from models import Base
+from .connection import engine
+from .models import Base
 
 
 def create_tables() -> None:

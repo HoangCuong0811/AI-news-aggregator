@@ -1,6 +1,14 @@
 from typing import Optional
+
+import sys
+from pathlib import Path
+
+sys.path.insert
+
 from scrapers.youtube import YouTubeScraper
 from database.repository import Repository
+
+TRANSCRIPT_UNAVAILABLE_MARKER = "unavailable"
 
 def process_videos_transcript(limit: Optional[int] = None) -> dict:
     scraper = YouTubeScraper()
